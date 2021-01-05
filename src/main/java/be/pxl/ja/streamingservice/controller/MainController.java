@@ -2,7 +2,9 @@ package be.pxl.ja.streamingservice.controller;
 
 import be.pxl.ja.streamingservice.StreamingService;
 import be.pxl.ja.streamingservice.StreamingServiceFactory;
+import be.pxl.ja.streamingservice.model.Account;
 import be.pxl.ja.streamingservice.model.Content;
+import be.pxl.ja.streamingservice.model.Profile;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -39,7 +42,7 @@ public class MainController implements Initializable {
 		streamingService = StreamingServiceFactory.getStreamingService();
 	}
 
-	private void showContent(Collection<Content> contentList) {
+	private void showContent(List<Content> contentList) {
 		GridPane contentGrid = new GridPane();
 		int row = 0;
 		int col = 0;
