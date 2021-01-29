@@ -44,23 +44,37 @@ public class CreditCardNumberTest {
 	}
 
 	@Test
-	public void throwsInvalidArgumentExceptionWhenNumberTooShort() {
+	public void throwsIlegalArgumentExceptionWhenNumberTooShort() {
 		assertThrows(IllegalArgumentException.class, () -> {
 					new CreditCardNumber("  53218 76532 1476  ", " 1 2 3 ");
 				});
 	}
 
 	@Test
-	public void throwsInvalidArgumentExceptionWhenNumberTooLong() {
+	public void throwsIllegalArgumentExceptionWhenNumberTooLong() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new CreditCardNumber("  53218 76532 1476 4445  ", " 1 2 3 ");
 		});
 	}
 
 	@Test
-	public void throwsInvalidArgumentExceptionWhenInvalidCardType() {
+	public void throwsIllegalArgumentExceptionWhenInvalidCardType() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new CreditCardNumber("7321876532147654", "123");
+		});
+	}
+
+	@Test
+	void throwsIllegalArgumentExceptionwhenCvcIsNotNumeric() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			new CreditCardNumber("4321876532147654", "geen integer");
+		});
+	}
+
+	@Test
+	void throwsIllegalArgumentExceptionwhenCvcIsNot3Digits() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			new CreditCardNumber("4321876532147654", "1 2 ");
 		});
 	}
 }

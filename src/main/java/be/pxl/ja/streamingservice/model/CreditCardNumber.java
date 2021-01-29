@@ -10,23 +10,32 @@ public class CreditCardNumber {
     private String cvc;
 
     public CreditCardNumber(String cardNumber, String cvc) {
-        this.number = cardNumber;
-        this.cvc = cvc;
+        this.number = validateNumber(removeBlanks(cardNumber));
+        this.creditCardType = validateCreditCardType();
+        this.cvc = validateCvc(removeBlanks(cvc));
+    }
 
-        if (!isNumeric(number) || number.length() != LENGTH) {
-            throw new IllegalArgumentException("A card number must have " + LENGTH + " digits.");
-        }
-
-        creditCardType = getCreditCardType(number);
-
-        if (creditCardType == null) {
-            throw new IllegalArgumentException("This is not a valid credit card");
-        }
-
+    private String validateCvc(String cvc) {
+        cvc = cvc.replaceAll("\\s+","");
         if (!isNumeric(cvc) || cvc.length() != CVC_LENGTH) {
             throw new IllegalArgumentException("A CVC number must have " + CVC_LENGTH + " digits.");
         }
+        return cvc;
+    }
 
+    private CreditCardType validateCreditCardType() {
+        CreditCardType creditCardType = getCreditCardType();
+        if (creditCardType == null) {
+            throw new IllegalArgumentException("This is not a valid credit card");
+        }
+        return creditCardType;
+    }
+
+    private String validateNumber(String cardNumber) {
+        if (!isNumeric(cardNumber) || cardNumber.length() != LENGTH) {
+            throw new IllegalArgumentException("A card number must have " + LENGTH + " digits.");
+        }
+        return cardNumber;
     }
 
     public CreditCardType getType() {
@@ -42,7 +51,7 @@ public class CreditCardNumber {
     }
 
     private String removeBlanks(String blanks) {
-        return number.strip();
+        return blanks.replaceAll("\\s+","");
     }
 
     private boolean isNumeric(String text) {
@@ -57,13 +66,13 @@ public class CreditCardNumber {
         }
     }
 
-    public CreditCardType getCreditCardType(String number) {
+    public CreditCardType getCreditCardType() {
         for (CreditCardType cardType : CreditCardType.values()) {
-            if (cardType.getFirstNumber() == Integer.parseInt(number.substring(0, 1))) {
+            if (cardType.getFirstNumber() == Integer.parseInt(this.number.substring(0, 1))) {
                 return cardType;
             }
         }
-        System.out.println(Integer.parseInt(number.substring(0, 1)));
+        System.out.println(Integer.parseInt(this.number.substring(0, 1)));
         return null;
     }
 }
